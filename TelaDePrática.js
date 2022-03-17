@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, Keyboard, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, Keyboard, StyleSheet, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function TelaDePrática({ tabuada, setModalVisible }) {
@@ -14,19 +14,10 @@ export default function TelaDePrática({ tabuada, setModalVisible }) {
     const [verificarPressableBackgroundColor, setVerificarPressableBackgroundColor] = useState('#717171');
     const [verificarPressableDisabled, setVerificarPressableDisabled] = useState(false);
     const [alturaELarguraDaTelaFinal, setAlturaELaguraDaTelaFinal] = useState({ height: 0, width: 0});
-
     const exercícios = [
         {
-            primeiroFator: tabuada,
-            segundoFator: 1
-        },
-        {
-            primeiroFator: tabuada,
-            segundoFator: 2
-        },
-        {
-            primeiroFator: tabuada,
-            segundoFator: 3
+            segundoFator: 8,
+            primeiroFator: tabuada
         },
         {
             primeiroFator: tabuada,
@@ -34,32 +25,57 @@ export default function TelaDePrática({ tabuada, setModalVisible }) {
         },
         {
             primeiroFator: tabuada,
-            segundoFator: 5
+            segundoFator: 9
         },
-        {
+        { 
+            segundoFator: 2,
             primeiroFator: tabuada,
-            segundoFator: 6
         },
         {
             primeiroFator: tabuada,
             segundoFator: 7
         },
         {
+            segundoFator: 10,
             primeiroFator: tabuada,
-            segundoFator: 8
         },
         {
             primeiroFator: tabuada,
-            segundoFator: 9
+            segundoFator: 5
+        },
+        {
+            segundoFator: 1,
+            primeiroFator: tabuada
         },
         {
             primeiroFator: tabuada,
-            segundoFator: 10
-        }
+            segundoFator: 3
+        },
+        {
+            primeiroFator: tabuada,
+            segundoFator: 6
+        },
     ];
 
     function fecharTelaPrática() {
-        setModalVisible(false);
+        Alert.alert('Atenção', 'Se optar por sair agora, perderá seu progresso.', [
+            { text: 'sair', style: 'cancel', onPress: () => setModalVisible(false) },
+            { text: 'continuar praticando' }
+        ])
+    };
+
+    function onChangeText(text) {
+        if (!text) {
+            setVerificarPressableBackgroundColor('#717171');
+            setVerificarPressableDisabled(true);
+        } else {
+            setVerificarPressableBackgroundColor();
+            setVerificarPressableDisabled(false);
+        };
+
+        text.replace(/[^0-9]/gi, '');
+
+        setResposta(text)
     };
     
     function verificarResposta() {
@@ -90,17 +106,6 @@ export default function TelaDePrática({ tabuada, setModalVisible }) {
             }
         }
     };
-
-    function onChangeText(text) {
-        if (!text) {
-            setVerificarPressableBackgroundColor('#717171');
-            setVerificarPressableDisabled(true);
-        } else {
-            setVerificarPressableBackgroundColor();
-            setVerificarPressableDisabled(false);
-        };
-        setResposta(text);
-    }
 
     useEffect(() => {
         setPrimeiroFator(exercícios[exercícioAtual].primeiroFator);

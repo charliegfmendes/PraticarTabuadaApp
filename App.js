@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, StatusBar, View, Text, FlatList, Pressable, Modal } from 'react-native';
+import { SafeAreaView, StyleSheet, StatusBar, View, Text, FlatList, Pressable, Modal, Alert } from 'react-native';
 import TelaDePrática from './TelaDePrática';
 
 const TABUADAS = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
-
-
 
 export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +40,12 @@ export default function App() {
                 animationType='slide'
                 transparent={false}
                 visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
+                onRequestClose={() => {
+                    Alert.alert('Atenção', 'Se optar por sair agora, perderá seu progresso.', [
+                        { text: 'sair', style: 'cancel', onPress: () => setModalVisible(false) },
+                        { text: 'continuar praticando' }
+                    ])
+                }}
             >
                 <TelaDePrática 
                     tabuada={tabuadaParaPraticar} 
